@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
+import { Rating } from 'react-simple-star-rating'
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,6 +12,29 @@ const UserBookings = () => {
   const [error, setError] = useState(null);
   const [newDate, setNewDate] = useState(null);
   let moveDateTo;
+  const [rating, setRating] = useState(0)
+
+  // Catch Rating value
+  const handleRating = async (rate) => {
+    setRating(rate)
+    try {
+      const {data: response} = await axios.post(`${API_URL}/reviews/`, {
+        withCredentials: true,
+        data: {
+          
+        }
+      })
+    } catch (error) {
+      setError("Failed to write rating")
+    }
+
+    // other logic
+  }
+  // Optinal callback functions
+  const onPointerEnter = () => console.log('Enter')
+  const onPointerLeave = () => console.log('Leave')
+  const onPointerMove = (value, index) => console.log(value, index)
+
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -43,12 +67,12 @@ const UserBookings = () => {
 
   const handleEditDate = async (bookingId, event) => {
     // const event = new Date("05 October 2022 14:48 UTC");
-    moveDateTo = event.toString();
+    // moveDateTo = event.toString();
     try {
       await axios.patch(`${API_URL}/bookings/edit/date/${bookingId}`, {
         withCredentials: true,
         data: {
-          date: moveDateTo
+          date: event
         }
       });
     } catch (err) {
@@ -99,8 +123,8 @@ const UserBookings = () => {
                     Edit date
                   </button>
                   {newDate && (
-                    <form onSubmit={handleEditDate(b.id)}>
-                      <input type="date" name="date" value={moveDateTo} required />
+                    <form onSubmit={handleEditDate(b.id, event)}>
+                      <input type="date" name="date" value={event} required />
                       <button
                         type="submit"
                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
@@ -110,6 +134,15 @@ const UserBookings = () => {
                     </form>
                   )}
                   {/* Complete button removed: only for admin */}
+                </td>
+                <td className="border px-2 py-1">
+                  <Rating
+                    onClick={handleRating}
+                    onPointerEnter={onPointerEnter}
+                    onPointerLeave={onPointerLeave}
+                    onPointerMove={onPointerMove}
+                  /* Available Props */
+                  />
                 </td>
               </tr>
             ))}

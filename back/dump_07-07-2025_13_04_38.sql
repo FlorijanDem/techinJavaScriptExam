@@ -192,7 +192,7 @@ CREATE TABLE public.bookings (
     id integer NOT NULL,
     user_id integer NOT NULL,
     excursion_id integer NOT NULL,
-    date date,
+    date timestamp without time zone,
     quantity integer NOT NULL,
     total_price numeric(10,2) NOT NULL,
     comfirmed boolean DEFAULT false,
@@ -367,6 +367,43 @@ ALTER SEQUENCE public.excursions_id_seq OWNED BY public.excursions.id;
 
 
 --
+-- Name: reviews; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.reviews (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    tour_id integer NOT NULL,
+    rating integer NOT NULL,
+    comment character varying
+);
+
+
+ALTER TABLE public.reviews OWNER TO myuser;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.reviews_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.reviews_id_seq OWNER TO myuser;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.reviews_id_seq OWNED BY public.reviews.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: myuser
 --
 
@@ -438,6 +475,13 @@ ALTER TABLE ONLY public.excursions_dates ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: reviews id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.reviews ALTER COLUMN id SET DEFAULT nextval('public.reviews_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: myuser
 --
 
@@ -449,9 +493,8 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 COPY public.bookings (id, user_id, excursion_id, date, quantity, total_price, comfirmed, completed) FROM stdin;
-3	3	30	2025-07-08	1	10.00	t	t
-4	3	35	2025-07-09	1	0.00	t	t
-5	1	36	2025-07-12	1	0.00	t	t
+1	1	37	2025-07-26 12:34:00	1	0.00	t	t
+2	4	36	2025-08-02 13:42:00	1	0.00	t	t
 \.
 
 
@@ -471,6 +514,7 @@ COPY public.categories (id, category) FROM stdin;
 COPY public.dates (id, date) FROM stdin;
 1	2025-07-05
 2	2025-07-06
+3	2025-07-17
 \.
 
 
@@ -488,6 +532,7 @@ COPY public.excursions (id, title, photo_url, duration, price, category_id) FROM
 34	gtdfgf		1	0.00	1
 35	cdcx		1	0.00	1
 36	dgdvv	https://lt.wikipedia.org/wiki/Vaizdas:Vilnius_old_town_by_Augustas_Didzgalvis.jpg	1	0.00	1
+37	yryt		1	0.00	1
 \.
 
 
@@ -505,6 +550,15 @@ COPY public.excursions_dates (id, excursion_id, date_id) FROM stdin;
 11	34	1
 12	35	2
 13	36	2
+14	37	3
+\.
+
+
+--
+-- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: myuser
+--
+
+COPY public.reviews (id, user_id, tour_id, rating, comment) FROM stdin;
 \.
 
 
@@ -516,6 +570,7 @@ COPY public.users (id, email, role, password) FROM stdin;
 2	darijusdulincskas@gmail.com	user	$argon2id$v=19$m=65536,t=3,p=4$IaGm5abTEK0DG569Dwa8TQ$9BIeZYlOaa7Kn3Cxc4i9WYaejsy5s9ym5HO4of44ctw
 1	admin@example.com	admin	$argon2id$v=19$m=65536,t=3,p=4$PP39XdpJZ3RzCSPQOLKuFQ$SskllOLvX7GfYAOSjwO2bg4SiRSZsKByaxpggvbqi6Y
 3	florijan.demidov@gmail.com	user	$argon2id$v=19$m=65536,t=3,p=4$ZkIKQ8XLw6A3GXo+P7LUbw$V7O7cppqd3U2ht/7vp/kAqmfaAeuEjTx3TuKLx1rGHw
+4	fsvdv@fdf.com	user	$argon2id$v=19$m=65536,t=3,p=4$EynJYgf+fKMG+Fbb0wqJCw$DJLn0tMFkLS7o6h0N+SoFS5cOxU0gKMBzfyyrrjHew0
 \.
 
 
@@ -523,7 +578,7 @@ COPY public.users (id, email, role, password) FROM stdin;
 -- Name: bookings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
 --
 
-SELECT pg_catalog.setval('public.bookings_id_seq', 5, true);
+SELECT pg_catalog.setval('public.bookings_id_seq', 2, true);
 
 
 --
@@ -537,28 +592,35 @@ SELECT pg_catalog.setval('public.categories_id_seq', 1, true);
 -- Name: dates_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
 --
 
-SELECT pg_catalog.setval('public.dates_id_seq', 2, true);
+SELECT pg_catalog.setval('public.dates_id_seq', 3, true);
 
 
 --
 -- Name: excursions_dates_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
 --
 
-SELECT pg_catalog.setval('public.excursions_dates_id_seq', 13, true);
+SELECT pg_catalog.setval('public.excursions_dates_id_seq', 14, true);
 
 
 --
 -- Name: excursions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
 --
 
-SELECT pg_catalog.setval('public.excursions_id_seq', 36, true);
+SELECT pg_catalog.setval('public.excursions_id_seq', 37, true);
+
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
+--
+
+SELECT pg_catalog.setval('public.reviews_id_seq', 1, false);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 3, true);
+SELECT pg_catalog.setval('public.users_id_seq', 4, true);
 
 
 --
@@ -618,6 +680,14 @@ ALTER TABLE ONLY public.excursions
 
 
 --
+-- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: myuser
 --
 
@@ -671,6 +741,22 @@ ALTER TABLE ONLY public.excursions_dates
 
 ALTER TABLE ONLY public.excursions_dates
     ADD CONSTRAINT excursions_dates_excursion_id_fkey FOREIGN KEY (excursion_id) REFERENCES public.excursions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: reviews reviews_tour_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_tour_id_fkey FOREIGN KEY (tour_id) REFERENCES public.excursions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: reviews reviews_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
