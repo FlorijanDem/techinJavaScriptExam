@@ -22,7 +22,7 @@ const Header = () => {
     <header className="header">
       <div className="header-content">
         <h1 className="title">
-          Beuty salon
+          Beauty salon
         </h1>
         <img className="logo" src="/src/assets/salon.png" alt="Salon icon" />
         <nav className={`${navOpen ? "visible p-4" : "invisible"}`}>

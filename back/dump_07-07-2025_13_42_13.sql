@@ -11,6 +11,7 @@ SET standard_conforming_strings = on;
 -- Drop databases (except postgres and template1)
 --
 
+DROP DATABASE another;
 DROP DATABASE exam;
 DROP DATABASE mydatabase;
 
@@ -128,6 +129,608 @@ SET row_security = off;
 
 REVOKE CONNECT,TEMPORARY ON DATABASE template1 FROM PUBLIC;
 GRANT CONNECT ON DATABASE template1 TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "another" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.4 (Debian 17.4-1.pgdg120+2)
+-- Dumped by pg_dump version 17.4 (Debian 17.4-1.pgdg120+2)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: another; Type: DATABASE; Schema: -; Owner: myuser
+--
+
+CREATE DATABASE another WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE another OWNER TO myuser;
+
+\connect another
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: bookings; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.bookings (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    excursion_id integer NOT NULL,
+    date timestamp without time zone,
+    quantity integer NOT NULL,
+    total_price numeric(10,2) NOT NULL,
+    comfirmed boolean DEFAULT false,
+    completed boolean DEFAULT false,
+    CONSTRAINT bookings_quantity_check CHECK ((quantity > 0))
+);
+
+
+ALTER TABLE public.bookings OWNER TO myuser;
+
+--
+-- Name: bookings_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.bookings_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.bookings_id_seq OWNER TO myuser;
+
+--
+-- Name: bookings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.bookings_id_seq OWNED BY public.bookings.id;
+
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.categories (
+    id integer NOT NULL,
+    category character varying(100)
+);
+
+
+ALTER TABLE public.categories OWNER TO myuser;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.categories_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.categories_id_seq OWNER TO myuser;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
+
+
+--
+-- Name: dates; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.dates (
+    id integer NOT NULL,
+    date date NOT NULL
+);
+
+
+ALTER TABLE public.dates OWNER TO myuser;
+
+--
+-- Name: dates_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.dates_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.dates_id_seq OWNER TO myuser;
+
+--
+-- Name: dates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.dates_id_seq OWNED BY public.dates.id;
+
+
+--
+-- Name: excursions; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.excursions (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    photo_url text,
+    duration integer NOT NULL,
+    price numeric(10,2) NOT NULL,
+    category_id integer
+);
+
+
+ALTER TABLE public.excursions OWNER TO myuser;
+
+--
+-- Name: excursions_dates; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.excursions_dates (
+    id integer NOT NULL,
+    excursion_id integer NOT NULL,
+    date_id integer NOT NULL
+);
+
+
+ALTER TABLE public.excursions_dates OWNER TO myuser;
+
+--
+-- Name: excursions_dates_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.excursions_dates_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.excursions_dates_id_seq OWNER TO myuser;
+
+--
+-- Name: excursions_dates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.excursions_dates_id_seq OWNED BY public.excursions_dates.id;
+
+
+--
+-- Name: excursions_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.excursions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.excursions_id_seq OWNER TO myuser;
+
+--
+-- Name: excursions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.excursions_id_seq OWNED BY public.excursions.id;
+
+
+--
+-- Name: reviews; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.reviews (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    tour_id integer NOT NULL,
+    rating integer NOT NULL,
+    comment character varying
+);
+
+
+ALTER TABLE public.reviews OWNER TO myuser;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.reviews_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.reviews_id_seq OWNER TO myuser;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.reviews_id_seq OWNED BY public.reviews.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: myuser
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    email character varying(255) NOT NULL,
+    role character varying(50) NOT NULL,
+    password character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO myuser;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: myuser
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_id_seq OWNER TO myuser;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: myuser
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: bookings id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bookings ALTER COLUMN id SET DEFAULT nextval('public.bookings_id_seq'::regclass);
+
+
+--
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
+
+
+--
+-- Name: dates id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.dates ALTER COLUMN id SET DEFAULT nextval('public.dates_id_seq'::regclass);
+
+
+--
+-- Name: excursions id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.excursions ALTER COLUMN id SET DEFAULT nextval('public.excursions_id_seq'::regclass);
+
+
+--
+-- Name: excursions_dates id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.excursions_dates ALTER COLUMN id SET DEFAULT nextval('public.excursions_dates_id_seq'::regclass);
+
+
+--
+-- Name: reviews id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.reviews ALTER COLUMN id SET DEFAULT nextval('public.reviews_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: bookings; Type: TABLE DATA; Schema: public; Owner: myuser
+--
+
+COPY public.bookings (id, user_id, excursion_id, date, quantity, total_price, comfirmed, completed) FROM stdin;
+1	1	2	2025-07-17 13:29:00	1	0.00	t	t
+2	1	2	2025-07-25 10:36:00	1	0.00	t	t
+\.
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: myuser
+--
+
+COPY public.categories (id, category) FROM stdin;
+1	General
+\.
+
+
+--
+-- Data for Name: dates; Type: TABLE DATA; Schema: public; Owner: myuser
+--
+
+COPY public.dates (id, date) FROM stdin;
+1	2025-07-07
+2	2025-07-24
+3	2025-07-16
+\.
+
+
+--
+-- Data for Name: excursions; Type: TABLE DATA; Schema: public; Owner: myuser
+--
+
+COPY public.excursions (id, title, photo_url, duration, price, category_id) FROM stdin;
+2	wqe		1	0.00	1
+1	Spa	http://www.hotelkralj.rs/en/wellness-spa-differences/	1	0.00	1
+\.
+
+
+--
+-- Data for Name: excursions_dates; Type: TABLE DATA; Schema: public; Owner: myuser
+--
+
+COPY public.excursions_dates (id, excursion_id, date_id) FROM stdin;
+2	2	2
+3	1	3
+\.
+
+
+--
+-- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: myuser
+--
+
+COPY public.reviews (id, user_id, tour_id, rating, comment) FROM stdin;
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: myuser
+--
+
+COPY public.users (id, email, role, password) FROM stdin;
+1	admin@example.com	admin	$argon2id$v=19$m=65536,t=3,p=4$m4n0Zp6xuAJIHn8e9Sea6Q$qXaMuZ7emBs+TmIa8UwjrftXrDhBWOl5A0gOPxHHiwI
+\.
+
+
+--
+-- Name: bookings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
+--
+
+SELECT pg_catalog.setval('public.bookings_id_seq', 2, true);
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
+--
+
+SELECT pg_catalog.setval('public.categories_id_seq', 1, true);
+
+
+--
+-- Name: dates_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
+--
+
+SELECT pg_catalog.setval('public.dates_id_seq', 3, true);
+
+
+--
+-- Name: excursions_dates_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
+--
+
+SELECT pg_catalog.setval('public.excursions_dates_id_seq', 3, true);
+
+
+--
+-- Name: excursions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
+--
+
+SELECT pg_catalog.setval('public.excursions_id_seq', 2, true);
+
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
+--
+
+SELECT pg_catalog.setval('public.reviews_id_seq', 1, false);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+
+
+--
+-- Name: bookings bookings_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bookings
+    ADD CONSTRAINT bookings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: dates dates_date_key; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.dates
+    ADD CONSTRAINT dates_date_key UNIQUE (date);
+
+
+--
+-- Name: dates dates_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.dates
+    ADD CONSTRAINT dates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: excursions_dates excursions_dates_excursion_id_date_id_key; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.excursions_dates
+    ADD CONSTRAINT excursions_dates_excursion_id_date_id_key UNIQUE (excursion_id, date_id);
+
+
+--
+-- Name: excursions_dates excursions_dates_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.excursions_dates
+    ADD CONSTRAINT excursions_dates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: excursions excursions_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.excursions
+    ADD CONSTRAINT excursions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bookings bookings_excursion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bookings
+    ADD CONSTRAINT bookings_excursion_id_fkey FOREIGN KEY (excursion_id) REFERENCES public.excursions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: bookings bookings_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.bookings
+    ADD CONSTRAINT bookings_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: excursions_dates excursions_dates_date_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.excursions_dates
+    ADD CONSTRAINT excursions_dates_date_id_fkey FOREIGN KEY (date_id) REFERENCES public.dates(id) ON DELETE CASCADE;
+
+
+--
+-- Name: excursions_dates excursions_dates_excursion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.excursions_dates
+    ADD CONSTRAINT excursions_dates_excursion_id_fkey FOREIGN KEY (excursion_id) REFERENCES public.excursions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: reviews reviews_tour_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_tour_id_fkey FOREIGN KEY (tour_id) REFERENCES public.excursions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: reviews reviews_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: myuser
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -495,6 +1098,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 COPY public.bookings (id, user_id, excursion_id, date, quantity, total_price, comfirmed, completed) FROM stdin;
 1	1	37	2025-07-26 12:34:00	1	0.00	t	t
 2	4	36	2025-08-02 13:42:00	1	0.00	t	t
+3	1	28	2025-07-12 13:07:00	1	10.00	f	f
 \.
 
 
@@ -578,7 +1182,7 @@ COPY public.users (id, email, role, password) FROM stdin;
 -- Name: bookings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: myuser
 --
 
-SELECT pg_catalog.setval('public.bookings_id_seq', 2, true);
+SELECT pg_catalog.setval('public.bookings_id_seq', 3, true);
 
 
 --

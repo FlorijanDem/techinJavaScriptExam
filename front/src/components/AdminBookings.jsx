@@ -85,8 +85,8 @@ const AdminBookings = () => {
             <th className="border px-2 py-1">User ID</th>
             <th className="border px-2 py-1">Excursion ID</th>
             <th className="border px-2 py-1">Date</th>
-            <th className="border px-2 py-1">Quantity</th>
-            <th className="border px-2 py-1">Total Price</th>
+            {/* <th className="border px-2 py-1">Quantity</th> */}
+            {/* <th className="border px-2 py-1">Total Price</th> */}
             <th className="border px-2 py-1">Status</th>
             <th className="border px-2 py-1">Actions</th>
           </tr>
@@ -98,8 +98,8 @@ const AdminBookings = () => {
               <td className="border px-2 py-1">{b.user_id}</td>
               <td className="border px-2 py-1">{b.excursion_id}</td>
               <td className="border px-2 py-1">{b.date}</td>
-              <td className="border px-2 py-1">{b.quantity}</td>
-              <td className="border px-2 py-1">{b.total_price}</td>
+              {/* <td className="border px-2 py-1">{b.quantity}</td> */}
+              {/* <td className="border px-2 py-1">{b.total_price}</td> */}
               <td className="border px-2 py-1">{b.status || "pending"}</td>
               <td className="border px-2 py-1">
                 {b.status === "pending" && (

@@ -14,7 +14,7 @@ const UserHeader = () => {
     <header className="header">
       <div className="header-content">
         <h1 className="title">
-          Beuty salon
+          Baeuty salon
         </h1>
         <img className="logo" src="/src/assets/salon.png" alt="Salon icon" />        <nav className={`${navOpen ? "visible p-4" : "invisible"}`}>
           <NavLink to="/" onClick={() => setNavOpen(false)}>

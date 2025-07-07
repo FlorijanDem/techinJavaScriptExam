@@ -182,7 +182,7 @@ const ExcursionList = () => {
         bookingForm,
         { withCredentials: true }
       );
-      alert("Excursion booked successfully!");
+      alert("Procedure booked successfully!");
       setBookModal({ open: false, excursion: null });
     } catch (error) {
       console.log(error);

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS excursions (
   photo_url TEXT,
   duration INTEGER NOT NULL,
   price NUMERIC(10,2) NOT NULL,
-  category_id INTEGER NOT NULL REFERENCES categories(id)
+  category_id INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS dates (
@@ -50,5 +50,5 @@ CREATE TABLE IF NOT EXISTS reviews (
   comment VARCHAR
 )
 
--- Insert initial data into categories
-INSERT INTO categories (category) VALUES ('General');
+INSERT INTO categories(category)
+VALUES ('General')
