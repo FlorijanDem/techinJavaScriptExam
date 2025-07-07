@@ -321,7 +321,7 @@ const ExcursionList = () => {
             onSubmit={handleEditSubmit}
             className="bg-white p-6 rounded shadow-md w-96 z-60 relative"
           >
-            <h2 className="text-xl mb-4">Edit Excursion</h2>
+            <h2 className="text-xl mb-4">Edit Procedure</h2>
             <input
               type="text"
               name="title"
@@ -339,7 +339,7 @@ const ExcursionList = () => {
               placeholder="Photo URL"
               className="block w-full mb-2 p-2 border rounded"
             />
-            <input
+            {/* <input
               type="number"
               name="duration"
               value={editModal.excursion.duration}
@@ -348,8 +348,8 @@ const ExcursionList = () => {
               className="block w-full mb-2 p-2 border rounded"
               min="1"
               required
-            />
-            <input
+            /> */}
+            {/* <input
               type="number"
               name="price"
               value={editModal.excursion.price}
@@ -358,7 +358,7 @@ const ExcursionList = () => {
               className="block w-full mb-2 p-2 border rounded"
               min="0"
               required
-            />
+            /> */}
             <input
               type="number"
               name="category_id"

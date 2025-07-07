@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   excursion_id INTEGER NOT NULL REFERENCES excursions(id) ON DELETE CASCADE,
   -- date_id INTEGER NOT NULL REFERENCES dates(id) ON DELETE CASCADE,
-  date DATE,
+  date TIMESTAMP,
   quantity INTEGER NOT NULL CHECK (quantity > 0),
   total_price NUMERIC(10,2) NOT NULL,
   comfirmed BOOLEAN DEFAULT FALSE,

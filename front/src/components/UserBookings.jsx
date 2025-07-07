@@ -9,6 +9,8 @@ const UserBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [newDate, setNewDate] = useState(null);
+  let moveDateTo;
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -39,18 +41,20 @@ const UserBookings = () => {
     }
   };
 
-  // const handleEditDate = async (bookingId) => {
-  //   try {
-  //     await axios.patch(`${API_URL}/edit/date/${bookingId}`, {
-  //       withCredentials: true,
-  //       data: {
-  //         date: 
-  //       }
-  //     });
-  //   } catch (err) {
-  //     setError("Failed to edit date")
-  //   }
-  // }
+  const handleEditDate = async (bookingId, event) => {
+    // const event = new Date("05 October 2022 14:48 UTC");
+    moveDateTo = event.toString();
+    try {
+      await axios.patch(`${API_URL}/bookings/edit/date/${bookingId}`, {
+        withCredentials: true,
+        data: {
+          date: moveDateTo
+        }
+      });
+    } catch (err) {
+      setError("Failed to edit date")
+    }
+  }
   if (!user) return null;
 
   return (
@@ -80,14 +84,31 @@ const UserBookings = () => {
                 <td className="border px-2 py-1">{b.date}</td>
                 <td className="border px-2 py-1">{b.quantity}</td>
                 <td className="border px-2 py-1">{b.total_price}</td>
-                <td className="border px-2 py-1">{b.status || "pending"}</td>
-                <td className="border px-2 py-1">
+                <td className="border px-2 py-1">{b.comfirmed ? "comfirmed" : undefined}{b.comfirmed && b.completed ? " and " : undefined}{b.completed ? "completed" : undefined}</td>
+                <td className="border px-2 py-2">
                   <button
                     className="bg-red-500 text-white px-2 py-1 rounded"
                     onClick={() => handleDelete(b.id)}
                   >
                     Delete
                   </button>
+                  <button
+                    className="bg-yellow-500 text-white px-2 py-1 rounded"
+                    onClick={() => setNewDate(true)}
+                  >
+                    Edit date
+                  </button>
+                  {newDate && (
+                    <form onSubmit={handleEditDate(b.id)}>
+                      <input type="date" name="date" value={moveDateTo} required />
+                      <button
+                        type="submit"
+                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                      >
+                        Submit
+                      </button>
+                    </form>
+                  )}
                   {/* Complete button removed: only for admin */}
                 </td>
               </tr>

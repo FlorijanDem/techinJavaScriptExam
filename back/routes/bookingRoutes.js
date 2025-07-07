@@ -18,6 +18,6 @@ bookingRouter.route("/:id").delete(protect, deleteBooking);
 
 bookingRouter.route("/:id/complete").patch(protect, isAdmin, completeBooking);
 
-bookingRouter.route("/edit/date/:id").patch(protect, editBookingDate)
+bookingRouter.route("/edit/date/:id").patch(editBookingDate)
 
 module.exports = bookingRouter;

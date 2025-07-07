@@ -117,8 +117,9 @@ exports.completeBooking = async (req, res, next) => {
 
 exports.editBookingDate = async (req, res, next) => {
     try {
+        console.log(req.body)
         const bookingId = req.params.id;
-        const date = req.body.date;
+        const date = req.body.data.date;
         const booking = await editBookingDate(bookingId, date);
 
         res.status(200).json({
