@@ -1,0 +1,54 @@
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  role VARCHAR(50) NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS categories (
+  id SERIAL PRIMARY KEY,
+  category VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS excursions (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  photo_url TEXT,
+  duration INTEGER NOT NULL,
+  price NUMERIC(10,2) NOT NULL,
+  category_id INTEGER NOT NULL REFERENCES categories(id)
+);
+
+CREATE TABLE IF NOT EXISTS dates (
+  id SERIAL PRIMARY KEY,
+  date DATE NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS excursions_dates (
+  id SERIAL PRIMARY KEY,
+  excursion_id INTEGER NOT NULL REFERENCES excursions(id) ON DELETE CASCADE,
+  date_id INTEGER NOT NULL REFERENCES dates(id) ON DELETE CASCADE,
+  UNIQUE (excursion_id, date_id)
+);
+
+CREATE TABLE IF NOT EXISTS bookings (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  excursion_id INTEGER NOT NULL REFERENCES excursions(id) ON DELETE CASCADE,
+  -- date_id INTEGER NOT NULL REFERENCES dates(id) ON DELETE CASCADE,
+  date DATE,
+  quantity INTEGER NOT NULL CHECK (quantity > 0),
+  total_price NUMERIC(10,2) NOT NULL,
+  comfirmed BOOLEAN DEFAULT FALSE,
+  completed BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  tour_id INTEGER NOT NULL REFERENCES excursions(id) ON DELETE CASCADE,
+  rating INTEGER NOT NULL,
+  comment VARCHAR
+)
+
+-- Insert initial data into categories
+INSERT INTO categories (category) VALUES ('General');

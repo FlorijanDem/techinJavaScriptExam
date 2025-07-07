@@ -1,0 +1,102 @@
+import { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import UserContext from "../contexts/UserContext";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+const UserBookings = () => {
+  const { user } = useContext(UserContext);
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const { data: response } = await axios.get(`${API_URL}/bookings/my`, {
+          withCredentials: true,
+        });
+        setBookings(response.data);
+      } catch (err) {
+        setError("Failed to fetch your bookings");
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (user) fetchBookings();
+  }, [user]);
+
+  const handleDelete = async (bookingId) => {
+    try {
+      await axios.delete(`${API_URL}/bookings/${bookingId}`, {
+        withCredentials: true,
+      });
+      setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+    } catch (err) {
+      setError("Failed to delete booking");
+    }
+  };
+
+  // const handleEditDate = async (bookingId) => {
+  //   try {
+  //     await axios.patch(`${API_URL}/edit/date/${bookingId}`, {
+  //       withCredentials: true,
+  //       data: {
+  //         date: 
+  //       }
+  //     });
+  //   } catch (err) {
+  //     setError("Failed to edit date")
+  //   }
+  // }
+  if (!user) return null;
+
+  return (
+    <div className="p-4">
+      <h2 className="text-2xl mb-4">My Bookings</h2>
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+      {!loading && bookings.length === 0 && <p>No bookings found.</p>}
+      {!loading && bookings.length > 0 && (
+        <table className="w-full border">
+          <thead>
+            <tr>
+              <th className="border px-2 py-1">Booking ID</th>
+              <th className="border px-2 py-1">Excursion ID</th>
+              <th className="border px-2 py-1">Date</th>
+              <th className="border px-2 py-1">Quantity</th>
+              <th className="border px-2 py-1">Total Price</th>
+              <th className="border px-2 py-1">Status</th>
+              <th className="border px-2 py-1">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookings.map((b) => (
+              <tr key={b.id}>
+                <td className="border px-2 py-1">{b.id}</td>
+                <td className="border px-2 py-1">{b.excursion_id}</td>
+                <td className="border px-2 py-1">{b.date}</td>
+                <td className="border px-2 py-1">{b.quantity}</td>
+                <td className="border px-2 py-1">{b.total_price}</td>
+                <td className="border px-2 py-1">{b.status || "pending"}</td>
+                <td className="border px-2 py-1">
+                  <button
+                    className="bg-red-500 text-white px-2 py-1 rounded"
+                    onClick={() => handleDelete(b.id)}
+                  >
+                    Delete
+                  </button>
+                  {/* Complete button removed: only for admin */}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+};
+
+export default UserBookings;
