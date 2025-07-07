@@ -11,7 +11,6 @@ const UserBookings = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newDate, setNewDate] = useState(null);
-  let moveDateTo;
   const [rating, setRating] = useState(0)
 
   // Catch Rating value
@@ -21,7 +20,7 @@ const UserBookings = () => {
       const {data: response} = await axios.post(`${API_URL}/reviews/`, {
         withCredentials: true,
         data: {
-
+          
         }
       })
     } catch (error) {
@@ -94,8 +93,6 @@ const UserBookings = () => {
               <th className="border px-2 py-1">Booking ID</th>
               <th className="border px-2 py-1">Excursion ID</th>
               <th className="border px-2 py-1">Date</th>
-              {/* <th className="border px-2 py-1">Quantity</th> */}
-              {/* <th className="border px-2 py-1">Total Price</th> */}
               <th className="border px-2 py-1">Status</th>
               <th className="border px-2 py-1">Actions</th>
             </tr>
@@ -106,8 +103,6 @@ const UserBookings = () => {
                 <td className="border px-2 py-1">{b.id}</td>
                 <td className="border px-2 py-1">{b.excursion_id}</td>
                 <td className="border px-2 py-1">{b.date}</td>
-                {/* <td className="border px-2 py-1">{b.quantity}</td> */}
-                {/* <td className="border px-2 py-1">{b.total_price}</td> */}
                 <td className="border px-2 py-1">{b.comfirmed ? "comfirmed" : undefined}{b.comfirmed && b.completed ? " and " : undefined}{b.completed ? "completed" : undefined}</td>
                 <td className="border px-2 py-2">
                   <button
@@ -133,7 +128,6 @@ const UserBookings = () => {
                       </button>
                     </form>
                   )}
-                  {/* Complete button removed: only for admin */}
                 </td>
                 <td className="border px-2 py-1">
                   <Rating
@@ -141,7 +135,6 @@ const UserBookings = () => {
                     onPointerEnter={onPointerEnter}
                     onPointerLeave={onPointerLeave}
                     onPointerMove={onPointerMove}
-                  /* Available Props */
                   />
                 </td>
               </tr>
