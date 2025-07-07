@@ -225,26 +225,6 @@ const ExcursionList = () => {
                   placeholder="Photo URL"
                   className="block w-full mb-2 p-2 border rounded"
                 />
-                {/* <input
-                  type="number"
-                  name="duration"
-                  value={form.duration}
-                  onChange={handleChange}
-                  placeholder="Duration (hours)"
-                  className="block w-full mb-2 p-2 border rounded"
-                  min="1"
-                  required
-                /> */}
-                {/* <input
-                  type="number"
-                  name="price"
-                  value={form.price}
-                  onChange={handleChange}
-                  placeholder="Price"
-                  className="block w-full mb-2 p-2 border rounded"
-                  min="0"
-                  required
-                /> */}
                 <input
                   type="number"
                   name="category_id"
@@ -339,26 +319,6 @@ const ExcursionList = () => {
               placeholder="Photo URL"
               className="block w-full mb-2 p-2 border rounded"
             />
-            {/* <input
-              type="number"
-              name="duration"
-              value={editModal.excursion.duration}
-              onChange={handleEditChange}
-              placeholder="Duration (hours)"
-              className="block w-full mb-2 p-2 border rounded"
-              min="1"
-              required
-            /> */}
-            {/* <input
-              type="number"
-              name="price"
-              value={editModal.excursion.price}
-              onChange={handleEditChange}
-              placeholder="Price"
-              className="block w-full mb-2 p-2 border rounded"
-              min="0"
-              required
-            /> */}
             <input
               type="number"
               name="category_id"
